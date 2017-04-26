@@ -1,4 +1,4 @@
-/*SELECT * FROM users;
+SELECT * FROM users;
 
 SELECT * FROM posts;
 
@@ -36,9 +36,34 @@ SELECT p.title AS post_title, p.url AS post_url, c.body AS comment_body
 SELECT p.title AS post_title, p.url AS post_url, c.body AS comment_body
  FROM posts p INNER JOIN comments c
   ON p.id = c.post_id
-    WHERE p.created_at > '2015-01-01';*/
+    WHERE p.created_at > '2015-01-01';
 
 SELECT p.title AS post_title, p.url AS post_url, c.body AS comment_body
  FROM posts p INNER JOIN comments c
   ON p.id = c.post_id
     WHERE c.body LIKE '%USB%';
+
+SELECT p.title AS post_title, u.first_name, u.last_name, c.body
+ FROM posts p
+  INNER JOIN users u
+    ON p.user_id = u.id
+  LEFT JOIN comments c
+    ON p.id = c.post_id
+      WHERE c.body LIKE '%matrix%';
+
+SELECT u.first_name, u.last_name, c.body AS comment_body
+  FROM users u
+   INNER JOIN posts p
+    ON u.id = p.user
+_id
+  INNER JOIN comments c
+    ON c.post_id = p.id
+      WHERE c.body LIKE '%SSL%' AND p.content LIKE '%dolorum%';
+
+SELECT u.first_name AS post_author_first_name, u.last_name AS post_author_last_name, p.title AS post_title, u.username AS comment_author_username, c.body AS comment_body
+  FROM users u
+   INNER JOIN posts p
+    ON u.id = p.user_id
+  INNER JOIN comments c
+    ON c.post_id = p.id
+      WHERE (c.body LIKE '%SSL%' OR c.body LIKE '%firewall%') AND p.content LIKE '%nemo%';
