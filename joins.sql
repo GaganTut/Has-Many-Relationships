@@ -1,4 +1,4 @@
-SELECT * FROM users;
+/*SELECT * FROM users;
 
 SELECT * FROM posts;
 
@@ -54,16 +54,24 @@ SELECT p.title AS post_title, u.first_name, u.last_name, c.body
 SELECT u.first_name, u.last_name, c.body AS comment_body
   FROM users u
    INNER JOIN posts p
-    ON u.id = p.user
-_id
-  INNER JOIN comments c
-    ON c.post_id = p.id
-      WHERE c.body LIKE '%SSL%' AND p.content LIKE '%dolorum%';
-
-SELECT u.first_name AS post_author_first_name, u.last_name AS post_author_last_name, p.title AS post_title, u.username AS comment_author_username, c.body AS comment_body
-  FROM users u
-   INNER JOIN posts p
     ON u.id = p.user_id
   INNER JOIN comments c
     ON c.post_id = p.id
-      WHERE (c.body LIKE '%SSL%' OR c.body LIKE '%firewall%') AND p.content LIKE '%nemo%';
+      WHERE c.body LIKE '%SSL%' AND p.content LIKE '%dolorum%';
+*/
+SELECT
+  u.first_name as post_author_first_name,
+  u.last_name as post_author_last_name,
+  p.title as post_title,
+  (
+   SELECT u1.first_name
+   FROM users u1
+   WHERE u1.id = c.user_id
+  ) as comment_author_username,
+  c.body as comment_body
+
+    FROM comments c
+      INNER JOIN posts p ON c.post_id = p.id
+      INNER JOIN users u ON p.user_id = u.id
+        WHERE (c.body LIKE '%SSL%' OR c.body LIKE '%firewall%')
+        AND p.content LIKE '%nemo%';
