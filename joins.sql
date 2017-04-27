@@ -58,7 +58,7 @@ SELECT u.first_name, u.last_name, c.body AS comment_body
   INNER JOIN comments c
     ON c.post_id = p.id
       WHERE c.body LIKE '%SSL%' AND p.content LIKE '%dolorum%';
-*/
+
 SELECT
   u.first_name as post_author_first_name,
   u.last_name as post_author_last_name,
@@ -75,3 +75,33 @@ SELECT
       INNER JOIN users u ON p.user_id = u.id
         WHERE (c.body LIKE '%SSL%' OR c.body LIKE '%firewall%')
         AND p.content LIKE '%nemo%';
+
+
+--VERSION B
+SELECT
+ u.first_name as post_author_first_name,
+ u.last_name as post_author_last_name,
+ p.title as post_title,
+ (
+   SELECT u1.username
+   FROM users u1
+   WHERE u1.id = c.user_id
+ ) as comment_author_username,
+ c.body as comment_body
+FROM comments c, users u, posts p
+WHERE c.post_id = p.id
+AND p.user_id = u.id
+AND (c.body LIKE '%SSL%' OR c.body LIKE '%firewall%')
+AND p.content LIKE '%nemo%';*/
+
+
+SELECT
+  p.user_id,
+  p.title,
+  c.user_id
+FROM
+  users u
+INNER JOIN posts p ON p.user_id = u.id
+INNER JOIN comments c ON c.post_id = p.id
+WHERE u.id = c.user_id
+;
